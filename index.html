@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>potential</title>
+
+<!-- ENGINE -->
+<script src="engine/cookies.js"></script>
+<script src="engine/sound.js"></script>
+<script src="engine/events.js"></script>
+<script src="engine/loops.js"></script>
+<script src="engine/state.js"></script>
+<script src="engine/time.js"></script>
+<script src="engine/renderer.js"></script>
+<script src="engine/keyboard.js"></script>
+<script src="engine/mouse.js"></script>
+<script src="engine/map.js"></script>
+<script src="engine/generators.js"></script>
+<script src="engine/player.js"></script>
+<script src="engine/blocks.js"></script>
+<script src="engine/tweener.js"></script>
+
+<!-- EVENTS -->
+<script src="events/event.rumble.js"></script>
+<script src="events/event.gamesong.js"></script>
+
+<!-- STATES -->
+<script src="states/stage.game.js"></script>
+<script src="states/state.death.js"></script>
+<script src="states/state.start.js"></script>
+
+<!-- GAME -->
+<script src="game.js"></script>
+<script>
+window.addEventListener("load", function() {
+	var $game = document.getElementById("game"),
+		$video = document.getElementById("video"),
+		$body = document.body;
+	
+	Game.setup($game);
+	
+	function resizeWindow() {
+		Game.width = $video.width = window.innerWidth;
+		Game.height = $video.height = window.innerHeight;
+		
+		// Make sure the video is stretched
+		var rawWidth = $video.videoWidth,
+			rawHeight = $video.videoHeight,
+			originalAspect = rawWidth / rawHeight,
+			containerWidth = $video.width,
+			containerHeight = $video.height,
+			targetAspect = containerWidth / containerHeight,
+			multi = targetAspect / originalAspect;
+		
+		$video.style.transform = "scaleX(" + multi + ")";
+		$video.style.msTransform = "scaleX(" + multi + ")";
+		$video.style.mozTransform = "scaleX(" + multi + ")";
+		$video.style.webkitTransform = "scaleX(" + multi + ")";
+		$video.style.oTransform = "scaleX(" + multi + ")";
+	}
+	
+	window.addEventListener('resize', function() {
+		resizeWindow();
+	}, false);
+	resizeWindow();
+	
+	Game.start();
+});
+</script>
+
+<style>
+html, body {
+	margin:0;
+	padding:0;
+	width:100%;
+	height:100%;
+	overflow:hidden;
+}
+#video, #game {
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+}
+#video {
+	width:100%;
+	height:100%;
+	z-index:99;
+}
+#game {
+	z-index:101;
+}
+html, body {
+	background-color:#000;
+}
+html, body, #game {
+	display:block;
+}
+#cover {
+	background-color:#000;
+	position:absolute;
+	top:0;
+	left:50%;
+	width:300px;
+	height:80px;
+	margin-left:-150px;
+	z-index:100;
+}
+</style>
+</head>
+
+<body>
+
+<video id="video" preload>
+	<source src="videos/game_1.mp4" type="video/mp4" />
+	<source src="videos/game_1.webm" type="video/webm" />
+	<source src="videos/game_1.ogv" type="video/ogg" />
+</video>
+<div id="cover"></div>
+<canvas id="game"></canvas>
+</body>
+</html>
